@@ -1,69 +1,69 @@
 ## 1. Project Setup
 
-- [ ] 1.1 Initialize Vite + React + TypeScript project
-- [ ] 1.2 Configure Tailwind CSS
-- [ ] 1.3 Set up project directory structure (core, store, components, pages, etc.)
-- [ ] 1.4 Install core dependencies (zustand, webdav, howler, music-metadata-browser)
-- [ ] 1.5 Configure TypeScript strict mode
-- [ ] 1.6 Set up ESLint and Prettier
+- [x] 1.1 Initialize Vite + React + TypeScript project
+- [x] 1.2 Configure Tailwind CSS
+- [x] 1.3 Set up project directory structure (core, store, components, pages, etc.)
+- [x] 1.4 Install core dependencies (zustand, webdav, howler, music-metadata-browser)
+- [x] 1.5 Configure TypeScript strict mode
+- [x] 1.6 Set up ESLint and Prettier
 
 ## 2. Core: WebDAV Integration
 
-- [ ] 2.1 Implement WebDAVClient class with webdav library
-- [ ] 2.2 Implement connection configuration storage (URL, username/password, token)
-- [ ] 2.3 Implement Basic Auth authentication
-- [ ] 2.4 Implement Token-based authentication
-- [ ] 2.5 Implement directory listing (PROPFIND)
-- [ ] 2.6 Implement file streaming with Range requests
-- [ ] 2.7 Add connection validation and error handling
-- [ ] 2.8 Create useWebDAV hook
+- [x] 2.1 Implement WebDAVClient class with webdav library
+- [x] 2.2 Implement connection configuration storage (URL, username/password, token)
+- [x] 2.3 Implement Basic Auth authentication
+- [x] 2.4 Implement Token-based authentication
+- [x] 2.5 Implement directory listing (PROPFIND)
+- [x] 2.6 Implement file streaming with Range requests
+- [x] 2.7 Add connection validation and error handling
+- [x] 2.8 Create useWebDAV hook
 
 ## 3. Core: Audio Engine
 
-- [ ] 3.1 Implement AudioEngine class with Web Audio API
-- [ ] 3.2 Implement native format playback (MP3/M4A/AAC/WAV/OGG) via AudioElement
-- [ ] 3.3 Integrate libflac.js for FLAC decoding
-- [ ] 3.4 Implement playback controls (play, pause, stop, previous, next)
-- [ ] 3.5 Implement seek functionality
-- [ ] 3.6 Implement volume control and mute
-- [ ] 3.7 Implement playback modes (sequential, shuffle, single loop, queue loop)
-- [ ] 3.8 Implement gapless playback with preloading
-- [ ] 3.9 Implement playback state machine (idle, loading, ready, playing, paused)
-- [ ] 3.10 Create useAudioPlayer hook
+- [x] 3.1 Implement AudioEngine class with Web Audio API
+- [x] 3.2 Implement native format playback (MP3/M4A/AAC/WAV/OGG) via AudioElement
+- [x] 3.3 Integrate libflac.js for FLAC decoding
+- [x] 3.4 Implement playback controls (play, pause, stop, previous, next)
+- [x] 3.5 Implement seek functionality
+- [x] 3.6 Implement volume control and mute
+- [x] 3.7 Implement playback modes (sequential, shuffle, single loop, queue loop)
+- [x] 3.8 Implement gapless playback with preloading
+- [x] 3.9 Implement playback state machine (idle, loading, ready, playing, paused)
+- [x] 3.10 Create useAudioPlayer hook
 
 ## 4. Core: Metadata Service
 
-- [ ] 4.1 Integrate music-metadata-browser for ID3/Vorbis/M4A parsing
-- [ ] 4.2 Implement embedded cover extraction
-- [ ] 4.3 Implement MusicBrainz API client for cover matching
-- [ ] 4.4 Implement LRCLIB API client for lyrics matching
-- [ ] 4.5 Implement Netease Cloud Music API client (optional, Chinese music)
-- [ ] 4.6 Implement LRC lyrics parser
-- [ ] 4.7 Implement metadata caching in IndexedDB
-- [ ] 4.8 Create useMetadata hook
+- [x] 4.1 Integrate music-metadata-browser for ID3/Vorbis/M4A parsing
+- [x] 4.2 Implement embedded cover extraction
+- [x] 4.3 Implement MusicBrainz API client for cover matching
+- [x] 4.4 Implement LRCLIB API client for lyrics matching
+- [x] 4.5 Implement Netease Cloud Music API client (optional, Chinese music)
+- [x] 4.6 Implement LRC lyrics parser
+- [x] 4.7 Implement metadata caching in IndexedDB
+- [x] 4.8 Create useMetadata hook
 
 ## 5. Core: Storage Service
 
-- [ ] 5.1 Implement LocalStorage service for settings/playlists/favorites
-- [ ] 5.2 Implement IndexedDB wrapper for metadata cache
-- [ ] 5.3 Implement SyncManager for AList WebDAV sync
-- [ ] 5.4 Implement conflict resolution logic
-- [ ] 5.5 Create useSync hook
+- [x] 5.1 Implement LocalStorage service for settings/playlists/favorites
+- [x] 5.2 Implement IndexedDB wrapper for metadata cache
+- [x] 5.3 Implement SyncManager for AList WebDAV sync
+- [x] 5.4 Implement conflict resolution logic
+- [x] 5.5 Create useSync hook
 
 ## 6. State Management
 
-- [ ] 6.1 Create usePlayerStore (current track, queue, playback state, volume)
-- [ ] 6.2 Create useLibraryStore (tracks, artists, albums, metadata index)
-- [ ] 6.3 Create useSettingsStore (theme, sync settings, preferences)
-- [ ] 6.4 Implement store persistence with Zustand persist middleware
+- [x] 6.1 Create usePlayerStore (current track, queue, playback state, volume)
+- [x] 6.2 Create useLibraryStore (tracks, artists, albums, metadata index)
+- [x] 6.3 Create useSettingsStore (theme, sync settings, preferences)
+- [x] 6.4 Implement store persistence with Zustand persist middleware
 
 ## 7. UI: Design System
 
-- [ ] 7.1 Define CSS variables for colors, spacing, typography (light/dark)
-- [ ] 7.2 Create glassmorphism effect styles
-- [ ] 7.3 Define animation keyframes and timing functions
-- [ ] 7.4 Create base UI components (Button, Slider, Modal, Loading)
-- [ ] 7.5 Implement dark mode toggle
+- [x] 7.1 Define CSS variables for colors, spacing, typography (light/dark)
+- [x] 7.2 Create glassmorphism effect styles
+- [x] 7.3 Define animation keyframes and timing functions
+- [x] 7.4 Create base UI components (Button, Slider, Modal, Loading)
+- [x] 7.5 Implement dark mode toggle
 
 ## 8. UI: Player Components
 
