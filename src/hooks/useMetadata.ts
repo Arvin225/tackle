@@ -1,35 +1,35 @@
-import { useState, useCallback } from 'react'
-import { MetadataParser } from '../../core/metadata/MetadataParser'
-import { CoverMatcher } from '../../core/metadata/CoverMatcher'
-import { LyricMatcher } from '../../core/metadata/LyricMatcher'
-import { metadataDB } from '../../core/metadata/MetadataIndex'
+import { useState, useCallback } from "react";
+import { MetadataParser } from "../../core/metadata/MetadataParser";
+import { CoverMatcher } from "../../core/metadata/CoverMatcher";
+import { LyricMatcher } from "../../core/metadata/LyricMatcher";
+import { metadataDB } from "../../core/metadata/MetadataIndex";
 
 export function useMetadata() {
-  const [metadataCache, setMetadataCache] = useState<any>(null)
-  const [loading, setLoading] = useState(false)
+  const [metadataCache, setMetadataCache] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
 
-  const parser = new MetadataParser()
-  const coverMatcher = new CoverMatcher()
-  const lyricMatcher = new LyricMatcher()
+  const parser = new MetadataParser();
+  const coverMatcher = new CoverMatcher();
+  const lyricMatcher = new LyricMatcher();
 
   /**
    * Parse metadata from file
    */
   const parseMetadata = useCallback(
     async (file: File): Promise<any> => {
-      setLoading(true)
+      setLoading(true);
       try {
-        const result = await parser.parse(file)
-        return result
+        const result = await parser.parse(file);
+        return result;
       } catch (error) {
-        console.error('Failed to parse metadata:', error)
-        throw error
+        console.error("Failed to parse metadata:", error);
+        throw error;
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     },
     [parser, setLoading]
-  )
+  );
 
   /**
    * Match cover art
@@ -37,15 +37,15 @@ export function useMetadata() {
   const matchCover = useCallback(
     async (artist: string, album: string, title?: string): Promise<string | null> => {
       try {
-        const cover = await coverMatcher.matchViaMusicBrainz(artist, album, title)
-        return cover?.url || null
+        const cover = await coverMatcher.matchViaMusicBrainz(artist, album, title);
+        return cover?.url || null;
       } catch (error) {
-        console.error('Cover match failed:', error)
-        return null
+        console.error("Cover match failed:", error);
+        return null;
       }
     },
     [coverMatcher]
-  )
+  );
 
   /**
    * Match lyrics
@@ -54,47 +54,69 @@ export function useMetadata() {
     async (artist: string, title: string): Promise<any> => {
       try {
         // Try LRCLIB first
-        let lyricsMatch = await lyricMatcher.matchViaLRCLIB(artist, title)
+        let lyricsMatch = await lyricMatcher.matchViaLRCLIB(artist, title);
 
         // If Chinese music, try Netease Cloud Music
         if (!lyricsMatch && this.isChineseText(artist) && this.isChineseText(title)) {
-          lyricsMatch = await lyricMatcher.matchViaNeteaseCloudMusic(artist, title)
+          lyricsMatch = await lyricMatcher.matchViaNeteaseCloudMusic(artist, title);
         }
 
-        return lyricsMatch
+        return lyricsMatch;
       } catch (error) {
-        console.error('Lyrics match failed:', error)
-        return null
+        console.error("Lyrics match failed:", error);
+        return null;
       }
     },
     [lyricMatcher]
-  )
+  );
 
   /**
    * Cache metadata
    */
-  const cacheMetadata = useCallback(
-    async (track: any): Promise<void> => {
-      try {
-        await metadataDB.saveMetadata([track])
-      } catch (error) {
-        console.error('Failed to cache metadata:', error)
-      }
-    },
-    []
-  )
+  const cacheMetadata = useCallback(async (track: any): Promise<void> => {
+    try {
+      await metadataDB.saveMetadata([track]);
+    } catch (error) {
+      console.error("Failed to cache metadata:", error);
+    }
+  }, []);
 
   /**
    * Get cached metadata
    */
   const getCachedMetadata = useCallback(async () => {
     try {
-      return await metadataDB.getAllTracks()
+      return await metadataDB.getAllTracks();
     } catch (error) {
-      console.error('Failed to get cached metadata:', error)
-      return []
+      console.error("Failed to get cached metadata:", error);
+      return [];
     }
-  }, [])
+  }, []);
+
+  /**
+   * Get metadata by track ID
+   */
+  const getMetadataByTrackId = useCallback(async (trackId: string) => {
+    try {
+      return await metadataDB.getTrackById(trackId);
+    } catch (error) {
+      console.error("Failed to get metadata by track ID:", error);
+      return null;
+    }
+  }, []);
+
+  /**
+   * Get lyrics by track ID
+   */
+  const getLyricsByTrackId = useCallback(async (trackId: string) => {
+    try {
+      const metadata = await metadataDB.getTrackById(trackId);
+      return metadata?.lyrics || null;
+    } catch (error) {
+      console.error("Failed to get lyrics by track ID:", error);
+      return null;
+    }
+  }, []);
 
   return {
     // State
@@ -106,5 +128,19 @@ export function useMetadata() {
     matchLyrics,
     cacheMetadata,
     getCachedMetadata,
-  }
+    getMetadataByTrackId,
+    getLyricsByTrackId,
+  };
+
+  return {
+    // State
+    loading,
+
+    // Methods
+    parseMetadata,
+    matchCover,
+    matchLyrics,
+    cacheMetadata,
+    getCachedMetadata,
+  };
 }

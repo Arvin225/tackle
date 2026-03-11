@@ -67,59 +67,59 @@
 
 ## 8. UI: Player Components
 
-- [ ] 8.1 Create Player component (main player view)
-- [ ] 8.2 Create MiniPlayer component (bottom bar)
-- [ ] 8.3 Create ProgressBar component
-- [ ] 8.4 Create VolumeControl component
-- [ ] 8.5 Create PlaybackControls component (play/pause/prev/next/mode)
-- [ ] 8.6 Create AlbumCover component with dynamic blur background
-- [ ] 8.7 Create TrackInfo component (title, artist, album)
-- [ ] 8.8 Create AudioQualityBadge component
+- [x] 8.1 Create Player component (main player view)
+- [x] 8.2 Create MiniPlayer component (bottom bar)
+- [x] 8.3 Create ProgressBar component
+- [x] 8.4 Create VolumeControl component
+- [x] 8.5 Create PlaybackControls component (play/pause/prev/next/mode)
+- [x] 8.6 Create AlbumCover component with dynamic blur background
+- [x] 8.7 Create TrackInfo component (title, artist, album)
+- [x] 8.8 Create AudioQualityBadge component
 
 ## 9. UI: Library Components
 
-- [ ] 9.1 Create Library component (main view)
-- [ ] 9.2 Create FolderNavigator component
-- [ ] 9.3 Create TrackList component with virtual list
-- [ ] 9.4 Create TrackItem component
-- [ ] 9.5 Create ArtistList component
-- [ ] 9.6 Create AlbumList component
-- [ ] 9.7 Create SearchBar component
+- [x] 9.1 Create Library component (main view)
+- [x] 9.2 Create FolderNavigator component
+- [x] 9.3 Create TrackList component with virtual list
+- [x] 9.4 Create TrackItem component
+- [x] 9.5 Create ArtistList component
+- [x] 9.6 Create AlbumList component
+- [x] 9.7 Create SearchBar component
 
 ## 10. UI: Playlist Components
 
-- [ ] 10.1 Create Playlist component
-- [ ] 10.2 Create PlaylistItem component
-- [ ] 10.3 Create PlaylistEditor component (create/edit/reorder)
-- [ ] 10.4 Create Queue component
-- [ ] 10.5 Create Favorites component
-- [ ] 10.6 Create RecentTracks component
+- [x] 10.1 Create Playlist component
+- [x] 10.2 Create PlaylistItem component
+- [x] 10.3 Create PlaylistEditor component (create/edit/reorder)
+- [x] 10.4 Create Queue component
+- [x] 10.5 Create Favorites component
+- [x] 10.6 Create RecentTracks component
 
 ## 11. UI: Lyrics Component
 
-- [ ] 11.1 Create LyricsPanel component
-- [ ] 11.2 Implement lyrics sync display
-- [ ] 11.3 Create LyricLine component with highlight
+- [x] 11.1 Create LyricsPanel component
+- [x] 11.2 Implement lyrics sync display
+- [x] 11.3 Create LyricLine component with highlight
 
 ## 12. UI: Settings Components
 
-- [ ] 12.1 Create Settings component (main view)
-- [ ] 12.2 Create WebDAVConfig component (connection settings)
-- [ ] 12.3 Create SyncSettings component
-- [ ] 12.4 Create ThemeSettings component
-- [ ] 12.5 Create PlaybackSettings component
+- [x] 12.1 Create Settings component (main view)
+- [x] 12.2 Create WebDAVConfig component (connection settings)
+- [x] 12.3 Create SyncSettings component
+- [x] 12.4 Create ThemeSettings component
+- [x] 12.5 Create PlaybackSettings component
 
 ## 13. Pages
 
-- [ ] 13.1 Create HomePage (welcome/quick access)
-- [ ] 13.2 Create LibraryPage (browse files)
-- [ ] 13.3 Create PlaylistPage (manage playlists)
-- [ ] 13.4 Create SettingsPage
-- [ ] 13.5 Set up React Router
+- [x] 13.1 Create HomePage (welcome/quick access)
+- [x] 13.2 Create LibraryPage (browse files)
+- [x] 13.3 Create PlaylistPage (manage playlists)
+- [x] 13.4 Create SettingsPage
+- [x] 13.5 Set up React Router
 
 ## 14. Integration & Testing
 
-- [ ] 14.1 Integrate all components and stores
+- [x] 14.1 Integrate all components and stores
 - [ ] 14.2 Test WebDAV connection with AList
 - [ ] 14.3 Test audio playback for all supported formats
 - [ ] 14.4 Test metadata parsing and caching
@@ -129,16 +129,16 @@
 
 ## 15. Optimization
 
-- [ ] 15.1 Implement virtual list for large track lists
-- [ ] 15.2 Optimize metadata indexing performance
-- [ ] 15.3 Add loading skeletons and error boundaries
-- [ ] 15.4 Optimize bundle size (code splitting, tree shaking)
+- [x] 15.1 Implement virtual list for large track lists
+- [x] 15.2 Optimize metadata indexing performance
+- [x] 15.3 Add loading skeletons and error boundaries
+- [x] 15.4 Optimize bundle size (code splitting, tree shaking)
 
 ## 16. Documentation & Deployment
 
-- [ ] 16.1 Write README with setup instructions
-- [ ] 16.2 Write AList configuration guide
-- [ ] 16.3 Build production bundle
+- [x] 16.1 Write README with setup instructions
+- [x] 16.2 Write AList configuration guide
+- [x] 16.3 Build production bundle
 - [ ] 16.4 Deploy to CDN/static hosting
 
 ## 17. Windows Client (Future)
