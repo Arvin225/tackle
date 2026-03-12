@@ -4,7 +4,7 @@ import { Play, MoreVertical, Trash2 } from "lucide-react";
 interface Playlist {
   id: string;
   name: string;
-  trackCount: number;
+  tracks: Array<{ id: string }>;
   coverUrl?: string;
 }
 
@@ -46,7 +46,9 @@ export const PlaylistItem: React.FC<PlaylistItemProps> = ({
         >
           {playlist.name}
         </h3>
-        <p className="text-xs text-[#86868b] dark:text-[#8e8e93]">{playlist.trackCount} tracks</p>
+        <p className="text-xs text-[#86868b] dark:text-[#8e8e93]">
+          {playlist.tracks.length} tracks
+        </p>
       </div>
 
       <div className="flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity">

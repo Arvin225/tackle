@@ -4,7 +4,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border-light dark:border-border-dark;
   }
   body {
     @apply bg-background-light text-text-primary dark:bg-background-dark dark:text-text-primary;

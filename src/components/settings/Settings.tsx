@@ -3,7 +3,7 @@ import { WebDAVConfig } from "./WebDAVConfig";
 import { SyncSettings } from "./SyncSettings";
 import { ThemeSettings } from "./ThemeSettings";
 import { PlaybackSettings } from "./PlaybackSettings";
-import { Settings, Database, Palette, Music } from "lucide-react";
+import { Database, Palette, Music } from "lucide-react";
 import { useSettingsStore } from "../../store/useSettingsStore";
 
 interface SettingsProps {
@@ -15,7 +15,7 @@ export const Settings: React.FC<SettingsProps> = ({ className = "" }) => {
     "general"
   );
 
-  const settings = useSettingsStore(state => ({
+  useSettingsStore(state => ({
     theme: state.theme,
   }));
 
@@ -90,8 +90,8 @@ export const Settings: React.FC<SettingsProps> = ({ className = "" }) => {
   );
 };
 
-const CloudSync = () => (
-  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+const CloudSync = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"

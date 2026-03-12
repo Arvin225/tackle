@@ -1,33 +1,31 @@
 import React, { useState } from "react";
-import { Playlist } from "../../core/audio/types";
+import { Playlist as PlaylistType } from "../../core/audio/types";
 import { PlaylistItem } from "./PlaylistItem";
 import { PlaylistEditor } from "./PlaylistEditor";
-import { Plus } from "lucide-react";
+import { Plus, Play } from "lucide-react";
 
 interface PlaylistProps {
-  playlists: Playlist[];
+  playlists: PlaylistType[];
   onPlay?: (playlistId: string) => void;
   onAddTrack?: (playlistId: string, trackId: string) => void;
   onRemoveTrack?: (playlistId: string, trackId: string) => void;
   onDelete?: (playlistId: string) => void;
-  onSavePlaylist?: (playlist: Playlist) => void;
+  onSavePlaylist?: (playlist: PlaylistType) => void;
   className?: string;
 }
 
 export const Playlist: React.FC<PlaylistProps> = ({
   playlists,
   onPlay,
-  onAddTrack,
-  onRemoveTrack,
   onDelete,
   onSavePlaylist,
   className = "",
 }) => {
-  const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | null>(null);
+  const [selectedPlaylist, setSelectedPlaylist] = useState<PlaylistType | null>(null);
   const [showEditor, setShowEditor] = useState(false);
-  const [editingPlaylist, setEditingPlaylist] = useState<Playlist | undefined>();
+  const [editingPlaylist, setEditingPlaylist] = useState<PlaylistType | undefined>();
 
-  const handleEditPlaylist = (playlist: Playlist) => {
+  const handleEditPlaylist = (playlist: PlaylistType) => {
     setEditingPlaylist(playlist);
     setShowEditor(true);
   };
@@ -88,7 +86,7 @@ export const Playlist: React.FC<PlaylistProps> = ({
                     {playlist.name}
                   </h3>
                   <p className="text-xs text-[#86868b] dark:text-[#8e8e93]">
-                    {playlist.trackCount} tracks
+                    {playlist.tracks.length} tracks
                   </p>
                 </div>
               </button>
@@ -106,7 +104,7 @@ export const Playlist: React.FC<PlaylistProps> = ({
                 {selectedPlaylist.name}
               </h2>
               <p className="text-xs text-[#86868b] dark:text-[#8e8e93]">
-                {selectedPlaylist.trackCount} tracks
+                {selectedPlaylist.tracks.length} tracks
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -119,7 +117,7 @@ export const Playlist: React.FC<PlaylistProps> = ({
             </div>
           </div>
           <div className="flex-1 overflow-y-auto p-4">
-            {selectedPlaylist.trackCount === 0 ? (
+            {selectedPlaylist.tracks.length === 0 ? (
               <div className="flex-1 flex items-center justify-center">
                 <p className="text-[#86868b] dark:text-[#8e8e93]">No tracks in this playlist</p>
               </div>

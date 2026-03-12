@@ -46,4 +46,10 @@ export default defineConfig({
     port: 5173,
     open: true,
   },
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: ["./tests/test-utils.tsx"],
+    css: true,
+  },
 });

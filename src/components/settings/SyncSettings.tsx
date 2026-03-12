@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "../common/Button";
 import { Switch } from "../common/Switch";
-import { CloudSync, RefreshCw, Save } from "lucide-react";
+import { Cloud, RefreshCw, Save } from "lucide-react";
 import { useSync } from "../../hooks/useSync";
 import { useSettingsStore } from "../../store/useSettingsStore";
 
@@ -41,7 +41,7 @@ export const SyncSettings: React.FC<SyncSettingsProps> = ({ className = "" }) =>
     <div className={`space-y-6 ${className}`}>
       <div>
         <div className="flex items-center gap-3 mb-4">
-          <CloudSync className="w-6 h-6 text-[#007aff]" />
+          <Cloud className="w-6 h-6 text-[#007aff]" />
           <h2 className="text-xl font-semibold text-[#1d1d1f] dark:text-white">Sync Settings</h2>
         </div>
       </div>

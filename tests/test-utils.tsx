@@ -1,4 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { afterEach } from "vitest";
+import { cleanup } from "@testing-library/react";
+import "@testing-library/jest-dom/vitest";
 
 type Theme = "light" | "dark" | "system";
 
@@ -55,3 +58,7 @@ export function useTheme() {
   }
   return context;
 }
+
+afterEach(() => {
+  cleanup();
+});

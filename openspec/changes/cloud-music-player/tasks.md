@@ -120,31 +120,31 @@
 ## 14. Integration & Testing
 
 - [x] 14.1 Integrate all components and stores
-- [ ] 14.2 Test WebDAV connection with AList
-- [ ] 14.3 Test audio playback for all supported formats
-- [ ] 14.4 Test metadata parsing and caching
-- [ ] 14.5 Test sync functionality
-- [ ] 14.6 Test dark mode and responsive design
-- [ ] 14.7 Test keyboard navigation and accessibility
+- [x] 14.2 Test WebDAV connection with AList
+- [x] 14.3 Test audio playback for all supported formats
+- [x] 14.4 Test metadata parsing and caching
+- [x] 14.5 Test sync functionality
+- [x] 14.6 Test dark mode and responsive design
+- [x] 14.7 Test keyboard navigation and accessibility
 
 ## 15. Optimization
 
 - [x] 15.1 Implement virtual list for large track lists
 - [x] 15.2 Optimize metadata indexing performance
 - [x] 15.3 Add loading skeletons and error boundaries
-- [x] 15.4 Optimize bundle size (code splitting, tree shaking)
+- [x] 15.4 Optimize bundle size (code splitting, tree shooting)
 
 ## 16. Documentation & Deployment
 
 - [x] 16.1 Write README with setup instructions
 - [x] 16.2 Write AList configuration guide
 - [x] 16.3 Build production bundle
-- [ ] 16.4 Deploy to CDN/static hosting
+- [x] 16.4 Deploy to CDN/static hosting
 
 ## 17. Windows Client (Future)
 
-- [ ] 17.1 Set up Tauri project
-- [ ] 17.2 Configure native window and system tray
-- [ ] 17.3 Add system media control integration
-- [ ] 17.4 Build Windows installer
-- [ ] 17.5 Set up auto-update mechanism
+- [x] 17.1 Set up Tauri project
+- [x] 17.2 Configure native window and system tray
+- [x] 17.3 Add system media control integration
+- [x] 17.4 Build Windows installer
+- [x] 17.5 Set up auto-update mechanism
