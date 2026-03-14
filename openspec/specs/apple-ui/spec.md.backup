@@ -5,17 +5,14 @@
 The system SHALL follow Apple Human Interface Guidelines.
 
 #### Scenario: Use Apple system font
-
 - **WHEN** rendering text
 - **THEN** system uses SF Pro or system default sans-serif font
 
 #### Scenario: Use Apple color palette
-
 - **WHEN** rendering UI elements
 - **THEN** system uses Apple color palette (blue accent, semantic colors)
 
 #### Scenario: Use Apple icon style
-
 - **WHEN** displaying icons
 - **THEN** system uses SF Symbols style icons (simple, clean lines)
 
@@ -24,12 +21,10 @@ The system SHALL follow Apple Human Interface Guidelines.
 The system SHALL implement glassmorphism effects.
 
 #### Scenario: Glass panel background
-
 - **WHEN** displaying overlay panels (player, modals)
 - **THEN** background has blur effect with semi-transparent overlay
 
 #### Scenario: Dynamic blur background
-
 - **WHEN** playing a track with album cover
 - **THEN** album cover is blurred and displayed as background
 
@@ -38,17 +33,14 @@ The system SHALL implement glassmorphism effects.
 The system SHALL implement smooth animations.
 
 #### Scenario: Transition animations
-
 - **WHEN** UI elements appear or disappear
 - **THEN** elements animate with ease-out timing (150-400ms)
 
 #### Scenario: Hover effects
-
 - **WHEN** user hovers over interactive elements
 - **THEN** elements show subtle scale or shadow change
 
 #### Scenario: Playback animation
-
 - **WHEN** track is playing
 - **THEN** album cover shows subtle rotation or pulse animation
 
@@ -57,17 +49,14 @@ The system SHALL implement smooth animations.
 The system SHALL support dark mode.
 
 #### Scenario: Auto dark mode
-
 - **WHEN** system prefers dark mode
 - **THEN** application displays dark theme
 
 #### Scenario: Manual dark mode toggle
-
 - **WHEN** user toggles dark mode setting
 - **THEN** application switches between light and dark themes
 
 #### Scenario: Persist theme preference
-
 - **WHEN** user changes theme
 - **THEN** preference is saved and applied on next startup
 
@@ -76,36 +65,30 @@ The system SHALL support dark mode.
 The system SHALL adapt to different screen sizes.
 
 #### Scenario: Desktop layout
-
 - **WHEN** screen width >= 1024px
-- **THEN** application displays navigation bar at top with links to all major sections
+- **THEN** application displays sidebar + main content layout
 
 #### Scenario: Tablet layout
-
 - **WHEN** screen width 768px - 1023px
-- **THEN** application displays collapsible sidebar + main content with navigation accessible via hamburger menu
+- **THEN** application displays collapsible sidebar + main content
 
 #### Scenario: Mobile layout
-
 - **WHEN** screen width < 768px
-- **THEN** application displays full-screen views with bottom navigation bar containing essential navigation items
+- **THEN** application displays full-screen views with bottom navigation
 
 ### Requirement: Mini Player
 
 The system SHALL provide a mini player mode.
 
 #### Scenario: Display mini player
-
 - **WHEN** user scrolls the main content
 - **THEN** mini player appears at bottom with essential controls
 
 #### Scenario: Mini player controls
-
 - **WHEN** mini player is visible
 - **THEN** user can play/pause, skip, and see current track info
 
 #### Scenario: Expand to full player
-
 - **WHEN** user clicks on mini player
 - **THEN** full player view expands
 
@@ -114,17 +97,14 @@ The system SHALL provide a mini player mode.
 The system SHALL be accessible.
 
 #### Scenario: Keyboard navigation
-
 - **WHEN** user navigates with keyboard
 - **THEN** all interactive elements are focusable and operable
 
 #### Scenario: Screen reader support
-
 - **WHEN** user uses screen reader
 - **THEN** all UI elements have appropriate ARIA labels
 
 #### Scenario: High contrast mode
-
 - **WHEN** system prefers high contrast
 - **THEN** application increases text and element contrast
 
@@ -133,54 +113,13 @@ The system SHALL be accessible.
 The system SHALL maintain smooth performance.
 
 #### Scenario: Smooth scrolling
-
 - **WHEN** scrolling long lists
 - **THEN** scrolling remains at 60fps using virtual list
 
 #### Scenario: Fast initial load
-
 - **WHEN** application starts
 - **THEN** initial UI renders in < 1 second
 
 #### Scenario: Responsive interactions
-
 - **WHEN** user interacts with UI
 - **THEN** response occurs in < 100ms
-
-### Requirement: Navigation Design Consistency
-
-The system SHALL ensure navigation components follow Apple design principles.
-
-#### Scenario: Navigation visual design
-
-- **WHEN** navigation components are displayed
-- **THEN** they use Apple color palette, typography, and spacing consistent with other UI elements
-
-#### Scenario: Navigation interaction feedback
-
-- **WHEN** user interacts with navigation items
-- **THEN** items provide appropriate visual feedback (hover states, active states) with smooth animations
-
-#### Scenario: Navigation accessibility
-
-- **WHEN** navigation is implemented
-- **THEN** it meets Apple accessibility standards including keyboard navigation and screen reader support
-
-### Requirement: Application State Visibility
-
-The system SHALL make application state visible through the UI.
-
-#### Scenario: Active page indication
-
-- **WHEN** user navigates to a page
-- **THEN** navigation clearly indicates the active page using visual cues (color, underline, icon variation)
-
-#### Scenario: Configuration status visibility
-
-- **WHEN** WebDAV configuration state changes
-- **THEN** UI provides subtle indication of configuration status (e.g., icon badge, color change)
-
-#### Scenario: First-time experience visibility
-
-- **WHEN** user is in first-time experience flow
-- **THEN** UI provides clear progress indication and exit options

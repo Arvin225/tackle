@@ -3,8 +3,10 @@ import { WebDAVConfig } from "./WebDAVConfig";
 import { SyncSettings } from "./SyncSettings";
 import { ThemeSettings } from "./ThemeSettings";
 import { PlaybackSettings } from "./PlaybackSettings";
-import { Database, Palette, Music } from "lucide-react";
+import { Database, Palette, Music, CheckCircle, AlertCircle } from "lucide-react";
 import { useSettingsStore } from "../../store/useSettingsStore";
+import { useAppStore } from "../../store/useAppStore";
+import { StorageStatus } from "../common/StorageStatus";
 
 interface SettingsProps {
   className?: string;
@@ -19,11 +21,36 @@ export const Settings: React.FC<SettingsProps> = ({ className = "" }) => {
     theme: state.theme,
   }));
 
+  const { webdavConfigured } = useAppStore();
+
   return (
     <div className={`flex h-full ${className}`}>
       {/* Sidebar */}
       <div className="w-72 p-6 glass-panel border-r-0 border-l-0 border-t-0 border-b-0 border-r border-[#d2d2d7] dark:border-[#48484a] flex flex-col">
-        <h2 className="text-2xl font-semibold text-[#1d1d1f] dark:text-white mb-8">Settings</h2>
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold text-[#1d1d1f] dark:text-white mb-2">Settings</h2>
+
+          {/* Configuration Status Indicator */}
+          <div
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg ${
+              webdavConfigured
+                ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
+                : "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"
+            }`}
+          >
+            {webdavConfigured ? (
+              <>
+                <CheckCircle className="w-4 h-4" />
+                <span className="text-sm font-medium">WebDAV Configured</span>
+              </>
+            ) : (
+              <>
+                <AlertCircle className="w-4 h-4" />
+                <span className="text-sm font-medium">WebDAV Not Configured</span>
+              </>
+            )}
+          </div>
+        </div>
 
         <div className="flex flex-col gap-2">
           <button
@@ -73,6 +100,11 @@ export const Settings: React.FC<SettingsProps> = ({ className = "" }) => {
             <Music className="w-5 h-5" />
             <span className="font-medium">Playback</span>
           </button>
+        </div>
+
+        {/* Storage Status */}
+        <div className="mt-8">
+          <StorageStatus showDetails={true} />
         </div>
       </div>
 
