@@ -1,17 +1,17 @@
-import { parseBuffer } from 'music-metadata-browser'
-import { Track } from '../audio/types'
+import { parseBuffer } from "music-metadata-browser";
+import { Track } from "../audio/types";
 
 export interface MetadataResult {
-  title: string
-  artist: string
-  album: string
-  duration: number
-  cover?: { data: Uint8Array; format: string }
-  artwork?: Array<{ data: Uint8Array; format: string }>
+  title: string;
+  artist: string;
+  album: string;
+  duration: number;
+  cover?: { data: Uint8Array; format: string };
+  artwork?: Array<{ data: Uint8Array; format: string }>;
 }
 
 export interface ParsedTrack extends Track {
-  metadata?: MetadataResult
+  metadata?: MetadataResult;
 }
 
 export class MetadataParser {
@@ -20,40 +20,40 @@ export class MetadataParser {
    */
   async parse(file: Blob): Promise<MetadataResult> {
     try {
-      const arrayBuffer = await file.arrayBuffer()
-      const uint8Array = new Uint8Array(arrayBuffer)
+      const arrayBuffer = await file.arrayBuffer();
+      const uint8Array = new Uint8Array(arrayBuffer);
 
       const metadata = await parseBuffer(uint8Array, {
         mimeType: file.type || undefined,
-      })
+      });
 
       const result: MetadataResult = {
-        title: metadata.common.title || '',
-        artist: metadata.common.artist || 'Unknown Artist',
-        album: metadata.common.album || 'Unknown Album',
+        title: metadata.common.title || "",
+        artist: metadata.common.artist || "Unknown Artist",
+        album: metadata.common.album || "Unknown Album",
         duration: metadata.format.duration || 0,
-      }
+      };
 
       // Extract embedded cover art
       if (metadata.common.picture && metadata.common.picture.length > 0) {
         result.cover = {
           data: metadata.common.picture[0].data,
           format: metadata.common.picture[0].format,
-        }
+        };
       }
 
-      // Extract additional artwork
-      if (metadata.common.artwork && metadata.common.artwork.length > 0) {
-        result.artwork = metadata.common.artwork.map((art) => ({
+      // Extract additional artwork from picture array
+      if (metadata.common.picture && metadata.common.picture.length > 1) {
+        result.artwork = metadata.common.picture.slice(1).map((art: any) => ({
           data: art.data,
           format: art.format,
-        }))
+        }));
       }
 
-      return result
+      return result;
     } catch (error) {
-      console.error('Failed to parse metadata:', error)
-      throw error
+      console.error("Failed to parse metadata:", error);
+      throw error;
     }
   }
 
@@ -62,16 +62,16 @@ export class MetadataParser {
    */
   async parseFromUrl(url: string): Promise<MetadataResult> {
     try {
-      const response = await fetch(url)
+      const response = await fetch(url);
       if (!response.ok) {
-        throw new Error(`Failed to fetch file: ${response.statusText}`)
+        throw new Error(`Failed to fetch file: ${response.statusText}`);
       }
 
-      const file = await response.blob()
-      return await this.parse(file)
+      const file = await response.blob();
+      return await this.parse(file);
     } catch (error) {
-      console.error('Failed to parse metadata from URL:', error)
-      throw error
+      console.error("Failed to parse metadata from URL:", error);
+      throw error;
     }
   }
 
@@ -82,16 +82,16 @@ export class MetadataParser {
     id: string,
     url: string,
     metadata: MetadataResult,
-    file?: Blob
+    _file?: Blob
   ): ParsedTrack {
     return {
       id,
       url,
-      title: metadata.title || 'Unknown Title',
-      artist: metadata.artist || 'Unknown Artist',
-      album: metadata.album || 'Unknown Album',
+      title: metadata.title || "Unknown Title",
+      artist: metadata.artist || "Unknown Artist",
+      album: metadata.album || "Unknown Album",
       duration: metadata.duration,
       metadata,
-    }
+    };
   }
 }

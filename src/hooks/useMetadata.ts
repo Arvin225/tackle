@@ -5,7 +5,6 @@ import { LyricMatcher } from "../core/metadata/LyricMatcher";
 import { metadataDB } from "../core/metadata/MetadataIndex";
 
 export function useMetadata() {
-  const [metadataCache, setMetadataCache] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
   const parser = new MetadataParser();
@@ -56,10 +55,8 @@ export function useMetadata() {
         // Try LRCLIB first
         let lyricsMatch = await lyricMatcher.matchViaLRCLIB(artist, title);
 
-        // If Chinese music, try Netease Cloud Music
-        if (!lyricsMatch && this.isChineseText(artist) && this.isChineseText(title)) {
-          lyricsMatch = await lyricMatcher.matchViaNeteaseCloudMusic(artist, title);
-        }
+        // TODO: Add support for Chinese music via Netease Cloud Music
+        // This would need isChineseText check and additional API calls
 
         return lyricsMatch;
       } catch (error) {
@@ -108,14 +105,10 @@ export function useMetadata() {
   /**
    * Get lyrics by track ID
    */
-  const getLyricsByTrackId = useCallback(async (trackId: string) => {
-    try {
-      const metadata = await metadataDB.getTrackById(trackId);
-      return metadata?.lyrics || null;
-    } catch (error) {
-      console.error("Failed to get lyrics by track ID:", error);
-      return null;
-    }
+  const getLyricsByTrackId = useCallback(async (_trackId: string) => {
+    // TODO: Implement lyrics fetching from a different source
+    // TrackMetadata doesn't have lyrics property
+    return null;
   }, []);
 
   return {

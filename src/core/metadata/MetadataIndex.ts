@@ -1,41 +1,41 @@
-import { openDB, IDBPDatabase } from 'idb'
+import { openDB, IDBPDatabase } from "idb";
 
 export interface TrackMetadata {
-  id: string
-  path: string
-  title: string
-  artist: string
-  album: string
-  duration: number
-  coverUrl?: string
-  lastModified: number
-  webdavSource?: string
+  id: string;
+  path: string;
+  title: string;
+  artist: string;
+  album: string;
+  duration: number;
+  coverUrl?: string;
+  lastModified: number;
+  webdavSource?: string;
 }
 
 export interface MetadataCache {
-  tracks: TrackMetadata[]
-  lastUpdated: number
+  tracks: TrackMetadata[];
+  lastUpdated: number;
 }
 
-const DB_NAME = 'CloudMusicPlayerDB'
-const DB_VERSION = 1
-const STORE_NAME = 'tracks'
+const DB_NAME = "CloudMusicPlayerDB";
+const DB_VERSION = 1;
+const STORE_NAME = "tracks";
 
 class MetadataDB {
-  private db: IDBPDatabase<MetadataCache> | null = null
+  private db: IDBPDatabase<MetadataCache> | null = null;
 
   async init(): Promise<void> {
     this.db = await openDB<MetadataCache>(DB_NAME, DB_VERSION, {
       upgrade(db) {
         if (!db.objectStoreNames.contains(STORE_NAME)) {
-          const store = db.createObjectStore(STORE_NAME, { keyPath: 'id' })
-          store.createIndex('byArtist', 'artist')
-          store.createIndex('byAlbum', 'album')
-          store.createIndex('byTitle', 'title')
-          store.createIndex('byLastModified', 'lastModified')
+          const store = db.createObjectStore(STORE_NAME, { keyPath: "id" });
+          store.createIndex("byArtist", "artist");
+          store.createIndex("byAlbum", "album");
+          store.createIndex("byTitle", "title");
+          store.createIndex("byLastModified", "lastModified");
         }
       },
-    })
+    });
   }
 
   /**
@@ -43,17 +43,17 @@ class MetadataDB {
    */
   async saveMetadata(metadata: TrackMetadata[]): Promise<void> {
     if (!this.db) {
-      await this.init()
+      await this.init();
     }
 
-    const tx = this.db!.transaction(STORE_NAME, 'readwrite')
-    const store = tx.store
+    const tx = this.db!.transaction(STORE_NAME, "readwrite");
+    const store = tx.store;
 
     for (const item of metadata) {
-      await store.put(item)
+      await store.put(item);
     }
 
-    await tx.done
+    await tx.done;
   }
 
   /**
@@ -61,10 +61,10 @@ class MetadataDB {
    */
   async getAllTracks(): Promise<TrackMetadata[]> {
     if (!this.db) {
-      await this.init()
+      await this.init();
     }
 
-    return await this.db!.getAllFromIndex(STORE_NAME, 'byTitle')
+    return await this.db!.getAllFromIndex(STORE_NAME, "byTitle");
   }
 
   /**
@@ -72,11 +72,12 @@ class MetadataDB {
    */
   async getTracksByArtist(artist: string): Promise<TrackMetadata[]> {
     if (!this.db) {
-      await this.init()
+      await this.init();
     }
 
-    const index = this.db!.index('byArtist')
-    return await index.getAll(artist)
+    const store = this.db!.transaction(STORE_NAME, "readonly").store;
+    const index = store.index("byArtist");
+    return await index.getAll(artist);
   }
 
   /**
@@ -84,11 +85,12 @@ class MetadataDB {
    */
   async getTracksByAlbum(album: string): Promise<TrackMetadata[]> {
     if (!this.db) {
-      await this.init()
+      await this.init();
     }
 
-    const index = this.db!.index('byAlbum')
-    return await index.getAll(album)
+    const store = this.db!.transaction(STORE_NAME, "readonly").store;
+    const index = store.index("byAlbum");
+    return await index.getAll(album);
   }
 
   /**
@@ -96,28 +98,41 @@ class MetadataDB {
    */
   async searchTracks(query: string): Promise<TrackMetadata[]> {
     if (!this.db) {
-      await this.init()
+      await this.init();
     }
 
-    const tx = this.db!.transaction(STORE_NAME, 'readonly')
-    const store = tx.store
+    const tx = this.db!.transaction(STORE_NAME, "readonly");
+    const store = tx.store;
 
-    const tracks: TrackMetadata[] = []
-    await store.openCursor().then(async (cursor) => {
+    const tracks: TrackMetadata[] = [];
+    await store.openCursor().then(async cursor => {
       while (cursor) {
-        const track = cursor.value
+        const track = cursor.value;
         if (
           track.title.toLowerCase().includes(query.toLowerCase()) ||
           track.artist.toLowerCase().includes(query.toLowerCase()) ||
           track.album.toLowerCase().includes(query.toLowerCase())
         ) {
-          tracks.push(track)
+          tracks.push(track);
         }
-        await cursor.continue()
+        await cursor.continue();
       }
-    })
+    });
 
-    return tracks
+    return tracks;
+  }
+
+  /**
+   * Get track by ID
+   */
+  async getTrackById(trackId: string): Promise<TrackMetadata | null> {
+    if (!this.db) {
+      await this.init();
+    }
+
+    const tx = this.db!.transaction(STORE_NAME, "readonly");
+    const store = tx.store;
+    return await store.get(trackId);
   }
 
   /**
@@ -125,12 +140,12 @@ class MetadataDB {
    */
   async updateTrack(metadata: TrackMetadata): Promise<void> {
     if (!this.db) {
-      await this.init()
+      await this.init();
     }
 
-    const tx = this.db!.transaction(STORE_NAME, 'readwrite')
-    await tx.store.put(metadata)
-    await tx.done
+    const tx = this.db!.transaction(STORE_NAME, "readwrite");
+    await tx.store.put(metadata);
+    await tx.done;
   }
 
   /**
@@ -138,12 +153,12 @@ class MetadataDB {
    */
   async deleteTrack(id: string): Promise<void> {
     if (!this.db) {
-      await this.init()
+      await this.init();
     }
 
-    const tx = this.db!.transaction(STORE_NAME, 'readwrite')
-    await tx.store.delete(id)
-    await tx.done
+    const tx = this.db!.transaction(STORE_NAME, "readwrite");
+    await tx.store.delete(id);
+    await tx.done;
   }
 
   /**
@@ -151,13 +166,13 @@ class MetadataDB {
    */
   async clearAll(): Promise<void> {
     if (!this.db) {
-      await this.init()
+      await this.init();
     }
 
-    const tx = this.db!.transaction(STORE_NAME, 'readwrite')
-    await tx.store.clear()
-    await tx.done
+    const tx = this.db!.transaction(STORE_NAME, "readwrite");
+    await tx.store.clear();
+    await tx.done;
   }
 }
 
-export const metadataDB = new MetadataDB()
+export const metadataDB = new MetadataDB();

@@ -1,33 +1,34 @@
-import { openDB, IDBPDatabase } from 'idb'
+import { openDB, IDBPDatabase } from "idb";
 
-const DB_NAME = 'CloudMusicPlayerCacheDB'
-const DB_VERSION = 1
-const CACHES_STORE = 'caches'
+const DB_NAME = "CloudMusicPlayerCacheDB";
+const DB_VERSION = 1;
+const CACHES_STORE = "caches";
 
 interface CacheEntry {
-  key: string
-  value: any
-  timestamp: number
+  key: string;
+  value: any;
+  timestamp: number;
 }
 
 interface CacheDB {
-  caches: IDBMap<string, CacheEntry>
+  // In idb, we don't need to explicitly type the object store structure
+  // It will be managed by the library
 }
 
 class CacheDBService {
-  private db: IDBPDatabase<CacheDB> | null = null
+  private db: IDBPDatabase<CacheDB> | null = null;
 
   async init(): Promise<void> {
     this.db = await openDB<CacheDB>(DB_NAME, DB_VERSION, {
       upgrade(db) {
         if (!db.objectStoreNames.contains(CACHES_STORE)) {
           const store = db.createObjectStore(CACHES_STORE, {
-            keyPath: 'key',
-          })
-          store.createIndex('timestamp', 'timestamp', { unique: false })
+            keyPath: "key",
+          });
+          store.createIndex("timestamp", "timestamp", { unique: false });
         }
       },
-    })
+    });
   }
 
   /**
@@ -35,11 +36,11 @@ class CacheDBService {
    */
   async get(key: string): Promise<any> {
     if (!this.db) {
-      await this.init()
+      await this.init();
     }
 
-    const entry = await this.db!.get(CACHES_STORE, key)
-    return entry?.value || null
+    const entry = await this.db!.get(CACHES_STORE, key);
+    return entry?.value || null;
   }
 
   /**
@@ -47,16 +48,16 @@ class CacheDBService {
    */
   async set(key: string, value: any): Promise<void> {
     if (!this.db) {
-      await this.init()
+      await this.init();
     }
 
     const entry: CacheEntry = {
       key,
       value,
       timestamp: Date.now(),
-    }
+    };
 
-    await this.db!.put(CACHES_STORE, entry)
+    await this.db!.put(CACHES_STORE, entry);
   }
 
   /**
@@ -64,10 +65,10 @@ class CacheDBService {
    */
   async delete(key: string): Promise<void> {
     if (!this.db) {
-      await this.init()
+      await this.init();
     }
 
-    await this.db!.delete(CACHES_STORE, key)
+    await this.db!.delete(CACHES_STORE, key);
   }
 
   /**
@@ -75,10 +76,10 @@ class CacheDBService {
    */
   async clear(): Promise<void> {
     if (!this.db) {
-      await this.init()
+      await this.init();
     }
 
-    await this.db!.clear(CACHES_STORE)
+    await this.db!.clear(CACHES_STORE);
   }
 
   /**
@@ -86,27 +87,24 @@ class CacheDBService {
    */
   async clearExpired(expirationMs: number): Promise<void> {
     if (!this.db) {
-      await this.init()
+      await this.init();
     }
 
-    const tx = this.db!.transaction(CACHES_STORE, 'readwrite')
-    const index = tx.store.index('timestamp')
-    const now = Date.now()
+    const tx = this.db!.transaction(CACHES_STORE, "readwrite");
+    const index = tx.store.index("timestamp");
+    const now = Date.now();
 
     // Get all entries
-    const entries = await index.getAll()
-
-    // Filter out expired entries
-    const validEntries = entries.filter((entry) => now - entry.timestamp < expirationMs)
+    const entries = await index.getAll();
 
     // Delete expired entries
     for (const entry of entries) {
       if (now - entry.timestamp >= expirationMs) {
-        await tx.store.delete(entry.key)
+        await tx.store.delete(entry.key);
       }
     }
 
-    await tx.done
+    await tx.done;
   }
 
   /**
@@ -114,12 +112,12 @@ class CacheDBService {
    */
   async getCacheSize(): Promise<number> {
     if (!this.db) {
-      await this.init()
+      await this.init();
     }
 
-    const tx = this.db!.transaction(CACHES_STORE, 'readonly')
-    const count = await tx.store.count()
-    return count
+    const tx = this.db!.transaction(CACHES_STORE, "readonly");
+    const count = await tx.store.count();
+    return count;
   }
 
   /**
@@ -127,11 +125,11 @@ class CacheDBService {
    */
   async reset(): Promise<void> {
     if (!this.db) {
-      await this.init()
+      await this.init();
     }
 
-    await this.db!.clear(CACHES_STORE)
+    await this.db!.clear(CACHES_STORE);
   }
 }
 
-export const cacheDBService = new CacheDBService()
+export const cacheDBService = new CacheDBService();

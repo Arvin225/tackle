@@ -9,32 +9,6 @@ export interface ParsedLyrics {
   lines: LyricLine[];
 }
 
-const formatTime = (timeStr: string): number => {
-  const parts = timeStr.split(":").map(Number);
-  if (parts.length === 2) {
-    return parts[0] * 60 + parts[1];
-  }
-  if (parts.length === 3) {
-    return parts[0] * 60 + parts[1] + parts[2] / 100;
-  }
-  return 0;
-};
-
-const parseTimestamp = (line: string): { timestamp: number; text: string } | null => {
-  const match = line.match(/\[(\d{2}):(\d{2})\.(\d{2,3})\](.*)/);
-  if (match) {
-    const minutes = parseInt(match[1], 10);
-    const seconds = parseInt(match[2], 10);
-    const milliseconds = parseInt(match[3].padEnd(3, "0"), 10);
-    const text = match[4].trim();
-    return {
-      timestamp: minutes * 60 + seconds + milliseconds / 1000,
-      text,
-    };
-  }
-  return null;
-};
-
 export const parseLRC = (lrc: string): ParsedLyrics => {
   const lines: LyricLine[] = [];
   let title: string | undefined;
