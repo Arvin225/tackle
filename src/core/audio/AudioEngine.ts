@@ -26,7 +26,6 @@ export class AudioEngine {
   private volume: number = 1;
   private mode: PlaybackMode = PlaybackMode.SEQUENTIAL;
   private gaplessPlayback: boolean = true;
-  private _crossfadeDuration: number = 0;
   private preloadAheadPercent: number = 0.8;
 
   private stateChangeListeners: Array<(state: PlaybackState) => void> = [];
@@ -36,7 +35,8 @@ export class AudioEngine {
   constructor(config?: AudioEngineConfig) {
     if (config) {
       this.gaplessPlayback = config.gaplessPlayback ?? true;
-      this._crossfadeDuration = config.crossfadeDuration ?? 0;
+      // Note: crossfadeDuration is not currently implemented
+      // this.crossfadeDuration = config.crossfadeDuration ?? 0;
       this.preloadAheadPercent = config.preloadAheadPercent ?? 0.8;
     }
   }
@@ -221,28 +221,6 @@ export class AudioEngine {
 
     if (this.currentIndex >= this.queue.length) {
       this.currentIndex = 0;
-    }
-
-    await this.playAtIndex(this.currentIndex);
-  }
-
-  /**
-   * Play previous track
-   */
-  private async _playPrevious(): Promise<void> {
-    if (this.state === PlaybackState.PLAYING) {
-      // If more than 3 seconds into track, restart it
-      const howl = this.howls.get(this.currentTrack!.id);
-      if (howl && howl.seek() > 3) {
-        howl.seek(0);
-        return;
-      }
-    }
-
-    if (this.mode === PlaybackMode.SHUFFLE) {
-      this.currentIndex = Math.floor(Math.random() * this.queue.length);
-    } else {
-      this.currentIndex = (this.currentIndex - 1 + this.queue.length) % this.queue.length;
     }
 
     await this.playAtIndex(this.currentIndex);
@@ -457,7 +435,8 @@ export class AudioEngine {
     this.stateChangeListeners.forEach(listener => listener(this.state));
   }
 
-  private _notifyProgress(progress: number): void {
-    this.progressListeners.forEach(listener => listener(progress));
-  }
+  // TODO: Implement progress notification when Howler provides seek events
+  // private _notifyProgress(progress: number): void {
+  //   this.progressListeners.forEach(listener => listener(progress));
+  // }
 }
