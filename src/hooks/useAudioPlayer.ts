@@ -9,8 +9,9 @@ export function useAudioPlayer() {
   const [queue, setQueue] = useState<Track[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [progress] = useState(0);
-  const [duration] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(1);
 
   // Initialize engine
@@ -22,8 +23,21 @@ export function useAudioPlayer() {
       setIsPlaying(state === "PLAYING");
     });
 
+    const unsubscribeProgress = engine.onProgress((position: number) => {
+      setProgress(position);
+      setCurrentTime(position);
+      // Duration is set when track loads
+    });
+
+    const unsubscribeEnd = engine.onEnd(() => {
+      // Handle track end
+      console.log("Track ended");
+    });
+
     return () => {
       unsubscribeState();
+      unsubscribeProgress();
+      unsubscribeEnd();
     };
   }, []);
 
@@ -35,6 +49,9 @@ export function useAudioPlayer() {
       await engineRef.current.loadTrack(track);
       setCurrentTrack(track);
       setQueue([track]);
+      // Get duration from engine
+      const duration = engineRef.current.getDuration();
+      setDuration(duration);
       engineRef.current.play();
     } catch (error) {
       console.error("Failed to load track:", error);
@@ -110,6 +127,7 @@ export function useAudioPlayer() {
     isMuted,
     progress,
     duration,
+    currentTime,
     volume,
 
     // Methods

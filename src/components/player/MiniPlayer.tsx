@@ -5,7 +5,7 @@ import { PlaybackControls } from "./PlaybackControls";
 import { VolumeControl } from "./VolumeControl";
 import { ProgressBar } from "./ProgressBar";
 import { usePlayerStore } from "../../store/usePlayerStore";
-import { Track } from "../../core/audio/types";
+import { PlaybackMode } from "../../core/audio/types";
 
 interface MiniPlayerProps {
   className?: string;
@@ -18,28 +18,43 @@ export const MiniPlayer: React.FC<MiniPlayerProps> = ({ className = "" }) => {
   const isMuted = usePlayerStore(state => state.isMuted);
   const playbackMode = usePlayerStore(state => state.playbackMode);
 
-  const shuffleEnabled = playbackMode === "SHUFFLE";
-  const loopEnabled = playbackMode === "QUEUE_LOOP" || playbackMode === "SINGLE_LOOP";
+  const shuffleEnabled = playbackMode === PlaybackMode.SHUFFLE;
+  const loopEnabled =
+    playbackMode === PlaybackMode.QUEUE_LOOP || playbackMode === PlaybackMode.SINGLE_LOOP;
 
   const handlePlayPause = usePlayerStore(state => state.togglePlay);
-  const handlePrevious = usePlayerStore(state => {
+  const handlePrevious = () => {
+    const state = usePlayerStore.getState();
     const queue = state.queue;
     const currentIndex = queue.findIndex(t => t.id === currentTrack?.id);
     if (currentIndex > 0) {
-      return () => state.setCurrentTrack(queue[currentIndex - 1]);
+      state.setCurrentTrack(queue[currentIndex - 1]);
     }
-    return () => {};
-  });
-  const handleNext = usePlayerStore(state => {
+  };
+
+  const handleNext = () => {
+    const state = usePlayerStore.getState();
     const queue = state.queue;
     const currentIndex = queue.findIndex(t => t.id === currentTrack?.id);
     if (currentIndex < queue.length - 1) {
-      return () => state.setCurrentTrack(queue[currentIndex + 1]);
+      state.setCurrentTrack(queue[currentIndex + 1]);
     }
-    return () => {};
-  });
-  const handleShuffleToggle = usePlayerStore(state => state.setPlaybackMode);
-  const handleLoopToggle = usePlayerStore(state => state.setPlaybackMode);
+  };
+  const setPlaybackMode = usePlayerStore(state => state.setPlaybackMode);
+
+  const handleShuffleToggle = () => {
+    setPlaybackMode(shuffleEnabled ? PlaybackMode.SEQUENTIAL : PlaybackMode.SHUFFLE);
+  };
+
+  const handleLoopToggle = () => {
+    if (!loopEnabled) {
+      setPlaybackMode(PlaybackMode.QUEUE_LOOP);
+    } else if (playbackMode === PlaybackMode.QUEUE_LOOP) {
+      setPlaybackMode(PlaybackMode.SINGLE_LOOP);
+    } else {
+      setPlaybackMode(PlaybackMode.SEQUENTIAL);
+    }
+  };
   const handleVolumeChange = usePlayerStore(state => state.setVolume);
   const handleMuteToggle = usePlayerStore(state => state.toggleMute);
 
@@ -58,8 +73,8 @@ export const MiniPlayer: React.FC<MiniPlayerProps> = ({ className = "" }) => {
         <PlaybackControls
           isPlaying={isPlaying}
           onPlayPause={handlePlayPause}
-          onPrevious={handlePrevious()}
-          onNext={handleNext()}
+          onPrevious={handlePrevious}
+          onNext={handleNext}
           onShuffleToggle={handleShuffleToggle}
           onLoopToggle={handleLoopToggle}
           shuffleEnabled={shuffleEnabled}

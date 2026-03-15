@@ -1,6 +1,6 @@
 import React from "react";
 
-interface SliderProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface SliderProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
   min?: number;
   max?: number;
   step?: number;

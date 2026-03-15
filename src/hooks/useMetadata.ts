@@ -1,8 +1,8 @@
 import { useState, useCallback } from "react";
-import { MetadataParser } from "../../core/metadata/MetadataParser";
-import { CoverMatcher } from "../../core/metadata/CoverMatcher";
-import { LyricMatcher } from "../../core/metadata/LyricMatcher";
-import { metadataDB } from "../../core/metadata/MetadataIndex";
+import { MetadataParser } from "../core/metadata/MetadataParser";
+import { CoverMatcher } from "../core/metadata/CoverMatcher";
+import { LyricMatcher } from "../core/metadata/LyricMatcher";
+import { metadataDB } from "../core/metadata/MetadataIndex";
 
 export function useMetadata() {
   const [metadataCache, setMetadataCache] = useState<any>(null);

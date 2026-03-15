@@ -27,9 +27,15 @@ export const PlaylistEditor: React.FC<PlaylistEditorProps> = ({
   const handleSave = () => {
     if (!name.trim()) return;
 
+    // Get tracks from selected IDs
+    const tracks = existingTracks.filter(track => selectedTrackIds.includes(track.id));
+
     const newPlaylist: Playlist = {
       id: playlist?.id || `playlist-${Date.now()}`,
       name: name.trim(),
+      tracks,
+      createdAt: playlist?.createdAt || Date.now(),
+      updatedAt: Date.now(),
       description: description.trim() || undefined,
       trackCount: selectedTrackIds.length,
       coverUrl: playlist?.coverUrl,

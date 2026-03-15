@@ -8,12 +8,12 @@ interface AudioQualityBadgeProps {
 }
 
 const formatNames: Record<AudioFormat, string> = {
-  MP3: "MP3",
-  M4A: "AAC",
-  AAC: "AAC",
-  FLAC: "FLAC",
-  WAV: "WAV",
-  OGG: "OGG",
+  [AudioFormat.MP3]: "MP3",
+  [AudioFormat.M4A]: "AAC",
+  [AudioFormat.AAC]: "AAC",
+  [AudioFormat.FLAC]: "FLAC",
+  [AudioFormat.WAV]: "WAV",
+  [AudioFormat.OGG]: "OGG",
 };
 
 const isLossless = (format: AudioFormat): boolean => {

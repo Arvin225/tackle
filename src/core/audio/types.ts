@@ -15,6 +15,8 @@ export interface Track {
   album?: string;
   duration?: number;
   format?: AudioFormat;
+  coverUrl?: string;
+  albumId?: string;
 }
 
 export interface AudioEngineConfig {
@@ -44,4 +46,8 @@ export interface Playlist {
   tracks: Track[];
   createdAt: number;
   updatedAt: number;
+  description?: string;
+  trackCount?: number;
+  coverUrl?: string;
+  trackIds?: string[];
 }

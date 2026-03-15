@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { FolderNavigator } from "./FolderNavigator";
+import FolderNavigator from "./FolderNavigator";
 import { TrackList } from "./TrackList";
 import { SearchBar } from "./SearchBar";
 import { AlbumList } from "./AlbumList";
 import { ArtistList } from "./ArtistList";
 import { useLibraryStore } from "../../store/useLibraryStore";
 import { usePlayerStore } from "../../store/usePlayerStore";
-import { Track } from "../../core/audio/types";
 
 interface LibraryProps {
   className?: string;
@@ -21,7 +20,7 @@ export const Library: React.FC<LibraryProps> = ({ className = "" }) => {
   const tracks = useLibraryStore(state => state.tracks);
   const albums = useLibraryStore(state => state.albums);
   const artists = useLibraryStore(state => state.artists);
-  const setCurrentTrack = useLibraryStore(state => state.setCurrentTrack);
+  const setCurrentTrack = usePlayerStore(state => state.setCurrentTrack);
 
   const handleTrackClick = (trackId: string) => {
     setSelectedTrackId(trackId);
@@ -40,8 +39,8 @@ export const Library: React.FC<LibraryProps> = ({ className = "" }) => {
     }
   };
 
-  const handleArtistClick = (artistId: string) => {
-    const artistTracks = tracks.filter(t => t.artistId === artistId);
+  const handleArtistClick = (artistName: string) => {
+    const artistTracks = tracks.filter(t => t.artist === artistName);
     if (artistTracks.length > 0) {
       usePlayerStore.getState().setQueue(artistTracks);
       usePlayerStore.getState().setCurrentTrack(artistTracks[0]);
@@ -58,17 +57,31 @@ export const Library: React.FC<LibraryProps> = ({ className = "" }) => {
       )
     : tracks;
 
+  // Convert string arrays to object arrays for components
+  const albumObjects = albums.map(albumName => ({
+    id: albumName,
+    name: albumName,
+    artist: tracks.find(t => t.album === albumName)?.artist || "Unknown Artist",
+    coverUrl: tracks.find(t => t.album === albumName)?.coverUrl,
+  }));
+
+  const artistObjects = artists.map(artistName => ({
+    id: artistName,
+    name: artistName,
+    coverUrl: tracks.find(t => t.artist === artistName)?.coverUrl,
+  }));
+
   const filteredAlbums = searchQuery
-    ? albums.filter(
+    ? albumObjects.filter(
         album =>
           album.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           album.artist?.toLowerCase().includes(searchQuery.toLowerCase())
       )
-    : albums;
+    : albumObjects;
 
   const filteredArtists = searchQuery
-    ? artists.filter(artist => artist.name.toLowerCase().includes(searchQuery.toLowerCase()))
-    : artists;
+    ? artistObjects.filter(artist => artist.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    : artistObjects;
 
   return (
     <div className={`flex h-full ${className}`}>
