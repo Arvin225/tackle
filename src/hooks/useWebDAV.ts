@@ -91,17 +91,6 @@ export function useWebDAV() {
   );
 
   /**
-   * Disconnect from WebDAV server
-   */
-  const disconnect = useCallback(async (): Promise<void> => {
-    await service.disconnect();
-    setConnected(false);
-    setCurrentPath("/");
-    setDirectoryContents([]);
-    setError(null);
-  }, [service]);
-
-  /**
    * Save connection configuration
    */
   const saveConnection = useCallback(
@@ -165,8 +154,17 @@ export function useWebDAV() {
 
       const tempService = new WebDAVService();
       await tempService.connect(config);
-      await tempService.disconnect();
-      return true;
+
+      // Actually test connection by listing root directory
+      // webdav library uses lazy connection, so we need to make a real request
+      try {
+        await tempService.listDirectory("/");
+        console.log("WebDAV connection test successful");
+        return true;
+      } catch (listError) {
+        console.error("WebDAV connection test failed:", listError);
+        throw listError;
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Connection test failed");
       return false;
@@ -234,7 +232,6 @@ export function useWebDAV() {
 
     // Methods
     connect,
-    disconnect,
     navigateUp,
     navigateTo,
     loadDirectory,
