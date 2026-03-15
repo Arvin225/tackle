@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Track, AudioFormat } from "../../core/audio/types";
+import { Track } from "../../core/audio/types";
 
 interface LibraryState {
   tracks: Track[];

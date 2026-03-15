@@ -39,7 +39,10 @@ export const StorageStatus: React.FC<StorageStatusProps> = ({
   };
 
   useEffect(() => {
-    checkStorageStatus();
+    // Use setTimeout to avoid synchronous state updates in effect
+    setTimeout(() => {
+      checkStorageStatus();
+    }, 0);
   }, []);
 
   const formatTime = (date: Date | null) => {

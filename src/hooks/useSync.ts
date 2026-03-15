@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { WebDAVService } from "../core/webdav/WebDAVClient";
-import { SyncManager, SyncConfig, SyncResult } from "../core/storage/SyncManager";
+import { SyncManager, SyncResult } from "../core/storage/SyncManager";
 import { LocalStorageService } from "../core/storage/LocalStorage";
 
 interface SyncState {
@@ -41,7 +41,8 @@ export function useSync(webDAVService: WebDAVService) {
   const setAutoSync = useCallback(
     (autoSync: boolean): void => {
       syncManager.stopAutoSync();
-      syncManager.config.autoSync = autoSync;
+      // Don't modify syncManager.config directly
+      // Instead, update our local state and let syncManager handle it
       if (autoSync) {
         syncManager.startAutoSync();
       }

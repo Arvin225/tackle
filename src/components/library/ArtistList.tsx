@@ -1,5 +1,5 @@
 import React from "react";
-import { Play, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 
 interface Artist {
   id: string;

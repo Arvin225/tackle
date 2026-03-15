@@ -70,6 +70,13 @@ export class AudioEngine {
   }
 
   /**
+   * Get current playback mode
+   */
+  getMode(): PlaybackMode {
+    return this.mode;
+  }
+
+  /**
    * Set volume (0-1)
    */
   setVolume(volume: number): void {
@@ -79,6 +86,13 @@ export class AudioEngine {
         howl.volume(this.volume);
       }
     });
+  }
+
+  /**
+   * Get current volume
+   */
+  getVolume(): number {
+    return this.volume;
   }
 
   /**
@@ -107,6 +121,20 @@ export class AudioEngine {
   }
 
   /**
+   * Remove track from queue by ID
+   */
+  removeFromQueue(trackId: string): void {
+    this.queue = this.queue.filter(track => track.id !== trackId);
+  }
+
+  /**
+   * Load and prepare track (alias for loadTrack)
+   */
+  public async load(track: Track): Promise<void> {
+    return this.loadTrack(track);
+  }
+
+  /**
    * Load and prepare track
    */
   public async loadTrack(track: Track): Promise<void> {
@@ -122,6 +150,8 @@ export class AudioEngine {
           preload: true,
           onload: () => {
             console.log(`Loaded track: ${track.title || track.url}`);
+            this.state = PlaybackState.READY;
+            this.notifyStateChange();
             resolve();
           },
           onloaderror: (id, error) => {
@@ -385,6 +415,16 @@ export class AudioEngine {
         this.stateChangeListeners.splice(index, 1);
       }
     };
+  }
+
+  /**
+   * Remove state change listener
+   */
+  offStateChange(listener: (state: PlaybackState) => void): void {
+    const index = this.stateChangeListeners.indexOf(listener);
+    if (index > -1) {
+      this.stateChangeListeners.splice(index, 1);
+    }
   }
 
   /**

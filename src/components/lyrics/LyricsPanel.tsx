@@ -10,7 +10,7 @@ interface LyricsPanelProps {
 export const LyricsPanel: React.FC<LyricsPanelProps> = ({ trackId, className = "" }) => {
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [showLyrics, setShowLyrics] = useState(false);
-  const { currentTime } = useAudioPlayer();
+  const { currentTime, seek } = useAudioPlayer();
   const [lyrics, setLyrics] = useState<{ lines: { timestamp: number; text: string }[] } | null>(
     null
   );
@@ -60,7 +60,6 @@ export const LyricsPanel: React.FC<LyricsPanelProps> = ({ trackId, className = "
   }, [lyrics, currentTime, showLyrics]);
 
   const handleLineClick = (index: number) => {
-    const { seek } = useAudioPlayer();
     if (lyrics && lyrics.lines[index]) {
       seek(lyrics.lines[index].timestamp);
       setCurrentLineIndex(index);

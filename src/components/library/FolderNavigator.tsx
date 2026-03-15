@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import { ChevronRight, ChevronLeft, Folder, FileMusic, Music } from "lucide-react";
-
-interface FolderItem {
-  id: string;
-  name: string;
-  path: string;
-  isFile: boolean;
-  children?: FolderItem[];
-}
+import { ChevronRight, ChevronLeft, Folder } from "lucide-react";
 
 interface FolderNavigatorProps {
   currentPath: string;
@@ -15,12 +7,12 @@ interface FolderNavigatorProps {
   className?: string;
 }
 
-export const FolderNavigator: React.FC<FolderNavigatorProps> = ({
+const FolderNavigator: React.FC<FolderNavigatorProps> = ({
   currentPath,
   onPathChange,
   className = "",
 }) => {
-  const [currentPathIndex, setCurrentPathIndex] = useState(0);
+  const [currentPathIndex, setCurrentPathIndex] = useState<number>(0);
 
   const pathParts = currentPath.split("/").filter(Boolean);
 
@@ -28,14 +20,6 @@ export const FolderNavigator: React.FC<FolderNavigatorProps> = ({
     if (currentPathIndex > 0) {
       const newPath = pathParts.slice(0, currentPathIndex).join("/");
       setCurrentPathIndex(currentPathIndex - 1);
-      onPathChange(newPath);
-    }
-  };
-
-  const handleNavigateForward = () => {
-    if (currentPathIndex < pathParts.length - 1) {
-      setCurrentPathIndex(currentPathIndex + 1);
-      const newPath = pathParts.slice(0, currentPathIndex + 2).join("/");
       onPathChange(newPath);
     }
   };
@@ -114,3 +98,5 @@ export const FolderNavigator: React.FC<FolderNavigatorProps> = ({
     </div>
   );
 };
+
+export default FolderNavigator;

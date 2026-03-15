@@ -1,12 +1,12 @@
-import React from 'react'
+import React from "react";
 
 interface SliderProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  min?: number
-  max?: number
-  step?: number
-  value: number
-  onChange: (value: number) => void
-  showValue?: boolean
+  min?: number;
+  max?: number;
+  step?: number;
+  value: number;
+  onChange: (value: number) => void;
+  showValue?: boolean;
 }
 
 export const Slider: React.FC<SliderProps> = ({
@@ -16,11 +16,9 @@ export const Slider: React.FC<SliderProps> = ({
   value,
   onChange,
   showValue = false,
-  className = '',
+  className = "",
   ...props
 }) => {
-  const percentage = ((value - min) / (max - min)) * 100
-
   return (
     <div className={`flex items-center gap-3 ${className}`}>
       <input
@@ -29,32 +27,26 @@ export const Slider: React.FC<SliderProps> = ({
         max={max}
         step={step}
         value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
+        onChange={e => onChange(Number(e.target.value))}
         className="flex-1 h-2 bg-[#d2d2d7] rounded-full appearance-none cursor-pointer dark:bg-[#48484a] [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#007aff] [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:active:scale-95 [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-[#007aff] [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:hover:scale-110 [&::-moz-range-thumb]:active:scale-95"
         style={{
-          appearance: 'none',
+          appearance: "none",
         }}
         {...props}
       />
       {showValue && (
-        <span className="text-sm text-[#86868b] dark:text-[#8e8e93] w-12 text-right">
-          {value}
-        </span>
+        <span className="text-sm text-[#86868b] dark:text-[#8e8e93] w-12 text-right">{value}</span>
       )}
     </div>
-  )
-}
+  );
+};
 
 interface VolumeSliderProps extends SliderProps {
-  onMuteToggle?: () => void
-  isMuted: boolean
+  onMuteToggle?: () => void;
+  isMuted: boolean;
 }
 
-export const VolumeSlider: React.FC<VolumeSliderProps> = ({
-  isMuted,
-  onMuteToggle,
-  ...props
-}) => {
+export const VolumeSlider: React.FC<VolumeSliderProps> = ({ isMuted, onMuteToggle, ...props }) => {
   return (
     <div className="flex items-center gap-2">
       {isMuted ? (
@@ -101,7 +93,7 @@ export const VolumeSlider: React.FC<VolumeSliderProps> = ({
         className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#f5f5f7] dark:hover:bg-[#2c2c2e] transition-colors"
       >
         <svg
-          className={`w-4 h-4 ${isMuted ? 'text-[#ff3b30]' : 'text-[#86868b]'}`}
+          className={`w-4 h-4 ${isMuted ? "text-[#ff3b30]" : "text-[#86868b]"}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -115,5 +107,5 @@ export const VolumeSlider: React.FC<VolumeSliderProps> = ({
         </svg>
       </button>
     </div>
-  )
-}
+  );
+};

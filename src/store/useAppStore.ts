@@ -49,14 +49,15 @@ export const useAppStore = create<AppState>()(
     {
       name: "app-storage",
       version: 1,
-      migrate: (persistedState: any, version: number) => {
+      migrate: (persistedState: unknown, version: number) => {
         if (version === 0) {
+          const state = persistedState as Partial<AppState>;
           return {
-            ...persistedState,
+            ...state,
             currentView: "home",
           };
         }
-        return persistedState;
+        return persistedState as AppState;
       },
     }
   )
