@@ -19,11 +19,9 @@ export interface DirectoryListingItem {
 
 export class WebDAVService {
   private client: ReturnType<typeof createWebDAVClient> | null = null;
-  private config: WebDAVConfig | null = null;
 
   constructor() {
     this.client = null;
-    this.config = null;
   }
 
   /**
@@ -31,44 +29,18 @@ export class WebDAVService {
    */
   async connect(config: WebDAVConfig): Promise<void> {
     this.config = config;
-    this.client = createWebDAVClient(config.serverUrl);
 
-    // Authenticate
-    if (config.token) {
-      await this.authenticateWithToken();
-    } else if (config.username && config.password) {
-      await this.authenticateWithPassword();
-    } else {
-      throw new Error("Either username/password or token is required");
+    try {
+      // Create client with server URL
+      this.client = createWebDAVClient(config.serverUrl);
+
+      // webdav library will handle authentication automatically based on config
+      // No need to manually call authenticate methods
+      console.log("WebDAV client created for:", config.serverUrl);
+    } catch (error) {
+      console.error("Failed to create WebDAV client:", error);
+      throw error;
     }
-  }
-
-  /**
-   * Authenticate with token
-   */
-  private async authenticateWithToken(): Promise<void> {
-    if (!this.client || !this.config) return;
-
-    // Token authentication - webdav library may handle this differently
-    // For now, we'll store the token in config
-  }
-
-  /**
-   * Authenticate with username and password (Basic Auth)
-   */
-  private async authenticateWithPassword(): Promise<void> {
-    if (!this.client || !this.config) return;
-
-    // Basic authentication - webdav library may handle this differently
-    // For now, we'll store credentials in config
-  }
-
-  /**
-   * Disconnect from server
-   */
-  async disconnect(): Promise<void> {
-    this.client = null;
-    this.config = null;
   }
 
   /**
