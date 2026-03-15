@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Playlist, Track } from "../../core/audio/types";
 import { Button } from "../common/Button";
-import { Plus, X, Trash2, Save, Play } from "lucide-react";
+import { X, Trash2, Save, Play } from "lucide-react";
 
 interface PlaylistEditorProps {
   playlist?: Playlist;
@@ -56,8 +56,6 @@ export const PlaylistEditor: React.FC<PlaylistEditorProps> = ({
       prev.includes(trackId) ? prev.filter(id => id !== trackId) : [...prev, trackId]
     );
   };
-
-  const selectedTracks = existingTracks.filter(t => selectedTrackIds.includes(t.id));
 
   return (
     <div className={`flex flex-col ${className}`}>

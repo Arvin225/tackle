@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { AlbumCover } from "./AlbumCover";
 import { TrackInfo } from "./TrackInfo";
 import { PlaybackControls } from "./PlaybackControls";
@@ -7,8 +7,8 @@ import { ProgressBar } from "./ProgressBar";
 import { AudioQualityBadge } from "./AudioQualityBadge";
 import { usePlayerStore } from "../../store/usePlayerStore";
 import { useAudioPlayer } from "../../hooks/useAudioPlayer";
-import { Track, PlaybackMode } from "../../core/audio/types";
-import { Play, Pause, SkipBack, SkipForward, Volume2, ChevronDown } from "lucide-react";
+import { PlaybackMode } from "../../core/audio/types";
+import { Pause, Volume2, ChevronDown } from "lucide-react";
 
 interface PlayerProps {
   className?: string;
@@ -28,7 +28,6 @@ export const Player: React.FC<PlayerProps> = ({ className = "" }) => {
   const { currentTime, duration, seek } = useAudioPlayer();
 
   const [isExpanded, setIsExpanded] = useState(false);
-  const [showLyrics, setShowLyrics] = useState(false);
 
   const shuffleEnabled = playbackMode === PlaybackMode.SHUFFLE;
   const loopEnabled =

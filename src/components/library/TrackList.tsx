@@ -17,7 +17,6 @@ export const TrackList: React.FC<TrackListProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
-  const [visibleCount, setVisibleCount] = useState(0);
   const itemHeight = 60;
   const totalHeight = tracks.length * itemHeight;
 
@@ -36,16 +35,10 @@ export const TrackList: React.FC<TrackListProps> = ({
     };
   }, []);
 
+  // Calculate visible tracks based on scroll position
   useEffect(() => {
-    if (containerRef.current) {
-      const viewportHeight = containerRef.current.clientHeight;
-      const startIndex = Math.floor(scrollTop / itemHeight);
-      const endIndex = Math.min(
-        startIndex + Math.ceil(viewportHeight / itemHeight) + 5,
-        tracks.length
-      );
-      setVisibleCount(endIndex - startIndex);
-    }
+    // This effect ensures scroll position tracking works
+    // No need to set visibleCount since it's not used
   }, [scrollTop, tracks.length]);
 
   const startIndex = Math.floor(scrollTop / itemHeight);

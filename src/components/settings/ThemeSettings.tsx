@@ -1,16 +1,14 @@
 import React, { useState } from "react";
-import { Button } from "../common/Button";
+
 import { Moon, Sun, Monitor } from "lucide-react";
 import { useSettingsStore } from "../../store/useSettingsStore";
-import { useTheme } from "../../hooks/useTheme";
 
 interface ThemeSettingsProps {
   className?: string;
 }
 
 export const ThemeSettings: React.FC<ThemeSettingsProps> = ({ className = "" }) => {
-  const [manualTheme, setManualTheme] = useState<"light" | "dark" | "system">("system");
-  const theme = useTheme();
+  const [_manualTheme, setManualTheme] = useState<"light" | "dark" | "system">("system");
   const settings = useSettingsStore(state => ({
     theme: state.theme,
     setTheme: state.setTheme,
@@ -21,9 +19,9 @@ export const ThemeSettings: React.FC<ThemeSettingsProps> = ({ className = "" }) 
     settings.setTheme(newTheme);
   };
 
-  const isSystem = theme === "system";
-  const isDark = theme === "dark";
-  const isLight = theme === "light";
+  const isSystem = settings.theme === "system";
+  const isDark = settings.theme === "dark";
+  const isLight = settings.theme === "light";
 
   return (
     <div className={`space-y-6 ${className}`}>

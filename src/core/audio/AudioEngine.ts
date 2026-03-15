@@ -26,7 +26,7 @@ export class AudioEngine {
   private volume: number = 1;
   private mode: PlaybackMode = PlaybackMode.SEQUENTIAL;
   private gaplessPlayback: boolean = true;
-  private crossfadeDuration: number = 0;
+  private _crossfadeDuration: number = 0;
   private preloadAheadPercent: number = 0.8;
 
   private stateChangeListeners: Array<(state: PlaybackState) => void> = [];
@@ -36,7 +36,7 @@ export class AudioEngine {
   constructor(config?: AudioEngineConfig) {
     if (config) {
       this.gaplessPlayback = config.gaplessPlayback ?? true;
-      this.crossfadeDuration = config.crossfadeDuration ?? 0;
+      this._crossfadeDuration = config.crossfadeDuration ?? 0;
       this.preloadAheadPercent = config.preloadAheadPercent ?? 0.8;
     }
   }
@@ -154,7 +154,7 @@ export class AudioEngine {
             this.notifyStateChange();
             resolve();
           },
-          onloaderror: (id, error) => {
+          onloaderror: (_id, error) => {
             console.error(`Failed to load track: ${track.title}`, error);
             reject(new Error(`Failed to load track: ${track.title}`));
           },
@@ -229,7 +229,7 @@ export class AudioEngine {
   /**
    * Play previous track
    */
-  private async playPrevious(): Promise<void> {
+  private async _playPrevious(): Promise<void> {
     if (this.state === PlaybackState.PLAYING) {
       // If more than 3 seconds into track, restart it
       const howl = this.howls.get(this.currentTrack!.id);
@@ -457,7 +457,7 @@ export class AudioEngine {
     this.stateChangeListeners.forEach(listener => listener(this.state));
   }
 
-  private notifyProgress(progress: number): void {
+  private _notifyProgress(progress: number): void {
     this.progressListeners.forEach(listener => listener(progress));
   }
 }

@@ -11,7 +11,7 @@ interface LyricLineProps {
 export const LyricLine: React.FC<LyricLineProps> = ({
   text,
   isActive,
-  timestamp,
+  timestamp: _timestamp,
   onClick,
   className = "",
 }) => {

@@ -38,7 +38,7 @@ vi.mock("howler", () => ({
 
 describe("AudioEngine", () => {
   let audioEngine: AudioEngine;
-  const mockTrack: Track = {
+  const _mockTrack: Track = {
     id: "track1",
     url: "https://example.com/track1.mp3",
     title: "Test Track",

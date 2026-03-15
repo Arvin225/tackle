@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { PlaybackMode } from "../core/audio/types";
 
-export type ThemeMode = "light" | "dark";
+export type ThemeMode = "light" | "dark" | "system";
 
 interface SettingsState {
   theme: ThemeMode;
@@ -45,7 +45,7 @@ export interface EqualizerSettings {
 export const useSettingsStore = create<SettingsState>()(
   persist(
     set => ({
-      theme: "light",
+      theme: "system",
       autoSync: true,
       defaultPlaybackMode: PlaybackMode.SEQUENTIAL,
       syncInterval: 60000,
@@ -78,7 +78,7 @@ export const useSettingsStore = create<SettingsState>()(
       setSyncOnStartup: syncOnStartup => set({ syncOnStartup }),
       resetSettings: () =>
         set({
-          theme: "light",
+          theme: "system",
           autoSync: true,
           defaultPlaybackMode: PlaybackMode.SEQUENTIAL,
           syncInterval: 60000,
