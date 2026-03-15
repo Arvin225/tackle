@@ -2,6 +2,8 @@ import { useState, useCallback, useEffect } from "react";
 import { WebDAVService, WebDAVConfig, DirectoryListingItem } from "../core/webdav/WebDAVClient";
 import { LocalStorageService, WebDAVConfigData } from "../core/storage/LocalStorage";
 import { useAppStore } from "../store/useAppStore";
+import { useLibraryStore } from "../store/useLibraryStore";
+import { scanMusicLibrary } from "../core/webdav/MusicLibraryScanner";
 
 export function useWebDAV() {
   const [service] = useState(() => new WebDAVService());
@@ -13,6 +15,7 @@ export function useWebDAV() {
   const [savedConfig, setSavedConfig] = useState<WebDAVConfigData | undefined>(undefined);
 
   const setWebDAVConfigured = useAppStore(state => state.setWebDAVConfigured);
+  const addTracks = useLibraryStore(state => state.addTracks);
 
   // Load saved configuration on mount
   useEffect(() => {
@@ -45,10 +48,10 @@ export function useWebDAV() {
         setConnected(true);
         setCurrentPath("/");
 
-        // Save configuration
+        // Save configuration and load music library
         const configToSave: WebDAVConfigData = {
           ...sanitizedConfig,
-          lastConnected: Date.now(),
+          lastConnected: savedConfig?.lastConnected,
           autoConnect: true,
         };
 
@@ -65,6 +68,15 @@ export function useWebDAV() {
 
         setSavedConfig(configToSave);
         setWebDAVConfigured(true);
+
+        // Auto-load music library after successful connection
+        try {
+          const tracks = await scanMusicLibrary(service, config.serverUrl);
+          addTracks(tracks);
+          console.log(`Loaded ${tracks.length} tracks from WebDAV server`);
+        } catch (error) {
+          console.error("Failed to load music library:", error);
+        }
 
         return true;
       } catch (err) {
