@@ -19,7 +19,7 @@ export class LRCParser {
         const milliseconds = parseInt(timeMatch[3], 10);
 
         // Handle milliseconds (2 or 3 digits)
-        const ms = milliseconds.toString().padEnd(3, "0").slice(0, 3);
+        const ms = parseInt(milliseconds.toString().padEnd(3, "0").slice(0, 3), 10);
         const time = minutes * 60 + seconds + ms / 1000;
 
         const text = timeMatch[4].trim();
