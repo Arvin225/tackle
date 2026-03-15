@@ -17,6 +17,7 @@ export interface Track {
   format?: AudioFormat;
   coverUrl?: string;
   albumId?: string;
+  xhrHeaders?: Record<string, string>;
 }
 
 export interface AudioEngineConfig {

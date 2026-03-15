@@ -11,8 +11,7 @@ interface WebDAVConfigProps {
 
 export const WebDAVConfig: React.FC<WebDAVConfigProps> = ({ className = "" }) => {
   const navigate = useNavigate();
-  const { connected, savedConfig, saveConnection, testConnection, deleteConnection, error } =
-    useWebDAV();
+  const { connected, savedConfig, connect, testConnection, deleteConnection, error } = useWebDAV();
   const { setWebDAVConfigured } = useAppStore();
 
   const [config, setConfig] = useState({
@@ -52,14 +51,15 @@ export const WebDAVConfig: React.FC<WebDAVConfigProps> = ({ className = "" }) =>
 
   const handleSave = async () => {
     try {
-      await saveConnection(config);
-      setWebDAVConfigured(true);
-      setTestResult("success");
-
-      // Auto-navigate to home page after successful configuration
-      setTimeout(() => {
-        navigate("/");
-      }, 1500);
+      const success = await connect(config);
+      if (success) {
+        setTestResult("success");
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
+      } else {
+        setTestResult("error");
+      }
     } catch (err) {
       setTestResult("error");
     }

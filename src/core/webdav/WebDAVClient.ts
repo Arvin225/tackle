@@ -19,6 +19,7 @@ export interface DirectoryListingItem {
 
 export class WebDAVService {
   private client: ReturnType<typeof createWebDAVClient> | null = null;
+  private config: WebDAVConfig | null = null;
 
   constructor() {
     this.client = null;
@@ -31,11 +32,11 @@ export class WebDAVService {
     this.config = config;
 
     try {
-      // Create client with server URL
-      this.client = createWebDAVClient(config.serverUrl);
-
-      // webdav library will handle authentication automatically based on config
-      // No need to manually call authenticate methods
+      // Create client with server URL and auth credentials
+      this.client = createWebDAVClient(config.serverUrl, {
+        username: config.username || "",
+        password: config.password || "",
+      });
       console.log("WebDAV client created for:", config.serverUrl);
     } catch (error) {
       console.error("Failed to create WebDAV client:", error);
@@ -169,5 +170,51 @@ export class WebDAVService {
     }
 
     await this.client.moveFile(sourcePath, destinationPath);
+  }
+
+  /**
+   * Get direct URL for an audio file including credentials for HTML5 audio element playing
+   */
+  getFileUrl(path: string): string {
+    if (!this.config) {
+      throw new Error("Not connected to WebDAV server");
+    }
+
+    let url = this.config.serverUrl;
+    if (!url.endsWith("/")) url += "/";
+
+    if (this.config.username && this.config.password) {
+      try {
+        const urlObj = new URL(url);
+        urlObj.username = this.config.username;
+        urlObj.password = this.config.password;
+        url = urlObj.toString();
+      } catch (e) {
+        console.error("Invalid WebDAV URL format", e);
+      }
+    }
+
+    const cleanPath = path.startsWith("/") ? path.substring(1) : path;
+    return url + cleanPath.split("/").map(encodeURIComponent).join("/");
+  }
+
+  /**
+   * Get Authorization headers for XHR fetching
+   */
+  getAuthHeaders(): Record<string, string> {
+    if (!this.config?.username) return {};
+    const authString = `${this.config.username}:${this.config.password || ""}`;
+    // Using simple Base64 encoding for Basic Auth
+    return {
+      Authorization: `Basic ${btoa(authString)}`,
+    };
+  }
+
+  /**
+   * Disconnect from WebDAV server
+   */
+  async disconnect(): Promise<void> {
+    this.client = null;
+    this.config = null;
   }
 }

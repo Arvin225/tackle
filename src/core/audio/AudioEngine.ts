@@ -9,6 +9,7 @@ export interface Track {
   album?: string;
   duration?: number;
   format?: AudioFormat;
+  xhrHeaders?: Record<string, string>;
 }
 
 export interface AudioEngineConfig {
@@ -146,7 +147,8 @@ export class AudioEngine {
         const howl = new Howl({
           src: [track.url],
           format: [format],
-          html5: true,
+          html5: !track.xhrHeaders, // Disable html5 if headers exist, allowing XHR to fetch with headers
+          xhr: track.xhrHeaders ? { headers: track.xhrHeaders } : undefined,
           preload: true,
           onload: () => {
             console.log(`Loaded track: ${track.title || track.url}`);

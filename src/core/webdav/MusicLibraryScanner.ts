@@ -20,7 +20,6 @@ const AUDIO_EXTENSIONS = [
 
 export async function scanMusicLibrary(
   webDAVService: WebDAVService,
-  serverUrl: string,
   onProgress?: (current: string, total: number) => void
 ): Promise<Track[]> {
   const tracks: Track[] = [];
@@ -43,11 +42,12 @@ export async function scanMusicLibrary(
           // Create track from audio file
           const track: Track = {
             id: `${item.path}-${item.name}`,
-            url: `${serverUrl}${item.path}`,
+            url: webDAVService.getFileUrl(item.path),
             title: item.name.replace(/\.[^/.]+$/, ""),
             artist: "Unknown Artist",
             album: "Unknown Album",
             duration: 0,
+            xhrHeaders: webDAVService.getAuthHeaders(),
           };
           tracks.push(track);
         }

@@ -71,7 +71,7 @@ export function useWebDAV() {
 
         // Auto-load music library after successful connection
         try {
-          const tracks = await scanMusicLibrary(service, config.serverUrl);
+          const tracks = await scanMusicLibrary(service);
           addTracks(tracks);
           console.log(`Loaded ${tracks.length} tracks from WebDAV server`);
         } catch (error) {
