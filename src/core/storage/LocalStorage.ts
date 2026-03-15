@@ -9,6 +9,7 @@ export interface LocalStorageData {
 export interface WebDAVConfigData {
   serverUrl: string;
   username?: string;
+  password?: string;
   token?: string;
   lastConnected?: number;
   autoConnect?: boolean;
@@ -440,6 +441,7 @@ export class LocalStorageService {
     const sanitized: WebDAVConfigData = {
       serverUrl: config.serverUrl?.trim() || "",
       username: config.username?.trim(),
+      password: config.password?.trim(),
       token: config.token?.trim(),
       lastConnected: config.lastConnected,
       autoConnect: config.autoConnect,

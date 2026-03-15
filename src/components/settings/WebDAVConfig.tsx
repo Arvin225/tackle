@@ -31,7 +31,7 @@ export const WebDAVConfig: React.FC<WebDAVConfigProps> = ({ className = "" }) =>
     setConfig({
       serverUrl: savedConfig?.serverUrl || "",
       username: savedConfig?.username || "",
-      password: "",
+      password: savedConfig?.password || "",
       token: savedConfig?.token || "",
     });
   }, [savedConfig]);
