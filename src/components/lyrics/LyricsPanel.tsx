@@ -11,7 +11,9 @@ export const LyricsPanel: React.FC<LyricsPanelProps> = ({ trackId, className = "
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [showLyrics, setShowLyrics] = useState(false);
   const { currentTime, seek } = useAudioPlayer();
-  const [lyrics, setLyrics] = useState<{ timestamp: number; text: string }[] | null>(null);
+  const [lyrics, setLyrics] = useState<{ lines: { timestamp: number; text: string }[] } | null>(
+    null
+  );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -58,8 +60,8 @@ export const LyricsPanel: React.FC<LyricsPanelProps> = ({ trackId, className = "
   }, [lyrics, currentTime, showLyrics]);
 
   const handleLineClick = (index: number) => {
-    if (lyrics && lyrics[index]) {
-      seek(lyrics[index].timestamp);
+    if (lyrics && lyrics.lines[index]) {
+      seek(lyrics.lines[index].timestamp);
       setCurrentLineIndex(index);
     }
   };
@@ -83,12 +85,12 @@ export const LyricsPanel: React.FC<LyricsPanelProps> = ({ trackId, className = "
   };
 
   const findCurrentLineIndex = (
-    lyrics: { timestamp: number; text: string }[],
+    lyrics: { lines: { timestamp: number; text: string }[] },
     currentTime: number
   ): number => {
     let index = 0;
-    for (let i = 0; i < lyrics.length; i++) {
-      if (lyrics[i].timestamp <= currentTime) {
+    for (let i = 0; i < lyrics.lines.length; i++) {
+      if (lyrics.lines[i].timestamp <= currentTime) {
         index = i;
       } else {
         break;
@@ -106,7 +108,7 @@ export const LyricsPanel: React.FC<LyricsPanelProps> = ({ trackId, className = "
     );
   }
 
-  if (!lyrics || lyrics.length === 0) {
+  if (!lyrics || lyrics.lines.length === 0) {
     return (
       <div className={`flex flex-col items-center justify-center ${className}`}>
         <svg
@@ -127,7 +129,7 @@ export const LyricsPanel: React.FC<LyricsPanelProps> = ({ trackId, className = "
     );
   }
 
-  const displayLines = lyrics.slice(Math.max(0, currentLineIndex - 4), currentLineIndex + 6);
+  const displayLines = lyrics.lines.slice(Math.max(0, currentLineIndex - 4), currentLineIndex + 6);
 
   return (
     <div className={`flex flex-col ${className}`}>
@@ -140,15 +142,15 @@ export const LyricsPanel: React.FC<LyricsPanelProps> = ({ trackId, className = "
 
       {showLyrics ? (
         <div className="flex-1 overflow-y-auto p-4 space-y-2">
-          {lyrics.length > 0 && (
+          {lyrics.lines.length > 0 && (
             <>
               <h3 className="text-xl font-semibold text-[#1d1d1f] dark:text-white mb-4">
-                {lyrics[0].text}
+                {lyrics.lines[0].text}
               </h3>
               <p className="text-sm text-[#86868b] dark:text-[#8e8e93] mb-4">Example Artist</p>
               <div className="space-y-2">
                 {displayLines.map(line => {
-                  const realIndex = lyrics.indexOf(line);
+                  const realIndex = lyrics.lines.indexOf(line);
                   return (
                     <LyricLine
                       key={realIndex}

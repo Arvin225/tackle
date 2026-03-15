@@ -4,13 +4,16 @@ import { Switch } from "../common/Switch";
 import { Cloud, RefreshCw, Save } from "lucide-react";
 import { useSync } from "../../hooks/useSync";
 import { useSettingsStore } from "../../store/useSettingsStore";
+import { WebDAVService } from "../../core/webdav/WebDAVClient";
 
 interface SyncSettingsProps {
   className?: string;
 }
 
 export const SyncSettings: React.FC<SyncSettingsProps> = ({ className = "" }) => {
-  const syncStatus = useSync();
+  // Create a WebDAVService instance for sync
+  const webDAVService = new WebDAVService();
+  const syncStatus = useSync(webDAVService);
   const [syncing, setSyncing] = useState(false);
   const [lastSync, setLastSync] = useState<string | null>(null);
 
@@ -24,7 +27,7 @@ export const SyncSettings: React.FC<SyncSettingsProps> = ({ className = "" }) =>
   const handleSyncNow = async () => {
     setSyncing(true);
     try {
-      await syncStatus.sync();
+      await syncStatus.syncToCloud();
       setLastSync(new Date().toLocaleString());
     } catch (error) {
       console.error("Sync failed:", error);
@@ -70,13 +73,13 @@ export const SyncSettings: React.FC<SyncSettingsProps> = ({ className = "" }) =>
               variant="primary"
               onClick={handleSyncNow}
               isLoading={syncing}
-              disabled={!syncStatus.isConnected}
+              disabled={!syncStatus.enabled}
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               Sync Now
             </Button>
 
-            {syncStatus.isConnected && lastSync && (
+            {syncStatus.enabled && lastSync && (
               <span className="text-sm text-[#86868b] dark:text-[#8e8e93]">
                 Last sync: {lastSync}
               </span>
@@ -84,31 +87,47 @@ export const SyncSettings: React.FC<SyncSettingsProps> = ({ className = "" }) =>
           </div>
         </div>
 
-        {syncStatus.status === "syncing" && (
-          <div className="glass-card p-4 rounded-lg">
-            <div className="flex items-center gap-3">
-              <RefreshCw className="w-5 h-5 text-[#007aff] animate-spin" />
-              <span className="text-sm text-[#1d1d1f] dark:text-white">Syncing data...</span>
-            </div>
+        {syncStatus.isSyncing && (
+          <div className="flex items-center gap-2">
+            <div className="animate-spin w-4 h-4 border-2 border-[#007aff] border-t-transparent rounded-full" />
+            <span className="text-sm text-[#007aff]">Syncing...</span>
           </div>
         )}
 
-        {syncStatus.status === "error" && (
+        {syncStatus.lastSyncMessage && syncStatus.lastSyncMessage.includes("error") && (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-[#ff3b30]">
+              Sync failed: {syncStatus.lastSyncMessage}
+            </span>
+          </div>
+        )}
+
+        {syncStatus.lastSyncMessage &&
+          !syncStatus.lastSyncMessage.includes("error") &&
+          lastSync && (
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-[#34c759]">Sync successful</span>
+            </div>
+          )}
+
+        {syncStatus.lastSyncMessage && syncStatus.lastSyncMessage.includes("error") && (
           <div className="glass-card p-4 rounded-lg border-l-4 border-red-500">
             <p className="text-sm text-[#1d1d1f] dark:text-white">
-              Sync failed: {syncStatus.error}
+              Sync failed: {syncStatus.lastSyncMessage}
             </p>
           </div>
         )}
 
-        {syncStatus.status === "success" && lastSync && (
-          <div className="glass-card p-4 rounded-lg border-l-4 border-green-500">
-            <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
-              <RefreshCw className="w-5 h-5" />
-              <span className="text-sm">Sync completed successfully at {lastSync}</span>
+        {syncStatus.lastSyncMessage &&
+          !syncStatus.lastSyncMessage.includes("error") &&
+          lastSync && (
+            <div className="glass-card p-4 rounded-lg border-l-4 border-green-500">
+              <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
+                <RefreshCw className="w-5 h-5" />
+                <span className="text-sm">Sync completed successfully at {lastSync}</span>
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
 
       <div className="glass-card p-4 rounded-lg">
